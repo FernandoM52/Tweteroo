@@ -17,8 +17,8 @@ app.post("/sign-up", (req, res) => {
 
     const user = { id: listOfUsers.length + 1, username, avatar };
     listOfUsers.push(user);
-    return res.send("OK");
-})
+    return res.status(201).send("OK");
+});
 
 app.post("/tweets", (req, res) => {
     const { username, tweet } = req.body;
@@ -35,21 +35,20 @@ app.post("/tweets", (req, res) => {
     const newTweet = { id: listOfTweets.length + 1, username, tweet };
     listOfTweets.push(newTweet);
     return res.status(201).send("OK");
-})
+});
 
 app.get("/tweets", (req, res) => {
     const lastTenTweets = listOfTweets.slice(-10);
 
     const showTweetByUser = lastTenTweets.map((tweet) => {
 
-        const tweetUser = listOfUsers.find(user => user.username === tweet.username)
+        const tweetUser = listOfUsers.find(user => user.username === tweet.username);
         const avatar = tweetUser ? tweetUser.avatar : null;
-
-        return { ...tweet, avatar }
-    })
+        return { ...tweet, avatar };
+    });
 
     res.send(showTweetByUser);
-})
+});
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Host is running at port ${PORT}`));
